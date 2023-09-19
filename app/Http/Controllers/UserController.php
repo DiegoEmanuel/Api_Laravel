@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     public readonly User $user;
+    public $timestamps = false;
     public function __construct()
     {
         $this->user = new User();
@@ -27,7 +28,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('users_create');
     }
 
     /**
@@ -35,15 +36,25 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $created = $this->user->create($request->except([
+            'firstName'=>$request->firstName,
+            'lastName'=>$request->lastName,
+            'email'=>$request->email,
+            'password'=> 'password_hash($request->password,PASSWORD_DEFAULT)',
+        ]));
+
+        if($created){
+            return redirect()->back()->with('message','User created');
+        }
+        return redirect()->back()->with('message','User not created');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(user $user)
     {
-        //
+       return view('users_show',['user'=>$user]);
     }
 
     /**
@@ -59,7 +70,12 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-       var_dump($id);
+        $updated = $this->user->where('id',$id)->update($request->except(['_token','_method']));
+
+        if($updated){
+            return redirect()->back()->with('message','User updated');
+        }
+        return redirect()->back()->with('message','User not updated');
     }
 
     /**
@@ -67,6 +83,7 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->user->where('id',$id)->delete();
+        return redirect()->route('users.index');
     }
 }

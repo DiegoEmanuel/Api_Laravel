@@ -1,9 +1,16 @@
 @extends('master')
 
 @section('content')
-<h2>Edit</h2>
+<h2>Edição</h2>
 
-<form action="{{route('users.update',['user'=>$user->id])}}">
+@if(session()->has('message'))
+    {{
+        session()->get('message')
+    }}
+@endif
+
+
+<form action="{{route('users.update',['user'=>$user->id])}}" method="post">
     @csrf
     <input type="hidden" name="_method" value="PUT">
     <input type="text" name="firstName" value="{{ $user->firstName }}">
@@ -12,7 +19,3 @@
     <input type="submit" value="Editar">
 </form>
 @endsection
-
-
-
-
