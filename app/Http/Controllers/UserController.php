@@ -59,7 +59,7 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+       var_dump($id);
     }
 
     /**
