@@ -44,9 +44,9 @@ class UserController extends Controller
         ]));
 
         if($created){
-            return redirect()->back()->with('message','User created');
+            return redirect()->route('users.index')->with('message','User created');
         }
-        return redirect()->back()->with('message','User not created');
+        return redirect()->route('users.create')->with('message','User not created');
     }
 
     /**

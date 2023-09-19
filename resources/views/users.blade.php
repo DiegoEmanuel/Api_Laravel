@@ -2,6 +2,12 @@
 
 @section('content')
 <h2>Users</h2>
+
+@if(session()->has('message'))
+    {{
+        session()->get('message')
+    }}
+@endif
 <hr>
 Create new user: <a href="{{ route('users.create') }}">Create</a>
 <ul>
